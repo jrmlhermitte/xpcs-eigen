@@ -53,6 +53,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "hdf5.h"
 #include "benchmark.h"
 
+// lots of entries are creating data but don't appear to be saved
+// to the class itself. where is it going and used?
 namespace xpcs {
 
 Configuration *Configuration::s_instance = 0;
@@ -169,6 +171,7 @@ void Configuration::init(const std::string &path, const std::string& entry)
 
 void Configuration::BuildQMap() {
   this->m_validPixelMask = new short[this->xdim * this->ydim];
+  // should this be self->m_sbin?
   m_sbin = new int[this->xdim * this->ydim];
 
   std::map<int, std::set<int>> sbin_to_qbin;
@@ -186,6 +189,7 @@ void Configuration::BuildQMap() {
     if (this->m_totalDynamicPartitions < dqmap[i])
       this->m_totalDynamicPartitions = dqmap[i];
 
+    // what is this? how does it work? is it just mapping i to pixel?
     if (it != m_mapping.end()) {
       std::map<int, std::vector<int> > &v = it->second;    
       std::map<int, std::vector<int>>::iterator it2 = v.find(sqmap[i]);
